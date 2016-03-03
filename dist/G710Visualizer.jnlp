@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="G710Visualizer.jnlp">
+  <information>
+    <title>G710Visualizer</title>
+    <vendor>Bryan</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="G710Visualizer.jar" size="14435" download="eager" />
+    <jar href="lib/logiled.jar" size="9780" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="G710Visualizer" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="g710visualizer.G710Visualizer"  name="G710Visualizer" />
+  <update check="always"/>
+</jnlp>
