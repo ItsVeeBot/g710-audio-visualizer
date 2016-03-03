@@ -2,4 +2,5 @@
 A music visualizer for the Logitech G710 and G710+. Will also work for other LogiLED-supported devices.
 
 ## Note:
-A 64-bit PC and the 64-bit version of Java is required. I'd love to support 32-bit versions, but apparently Logitech's Java API does not support 32-bit machines right now. Sorry.
+If you are on a 64-bit machine, you must use the 64-bit version of Java.
+If you are on a 32-bit machine, I am currently unsure whether or not the program will work. Please let me know if you've had any success in the "Issues" tab.
