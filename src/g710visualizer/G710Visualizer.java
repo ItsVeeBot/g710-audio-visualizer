@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 import javax.sound.sampled.*;
 import com.logitech.gaming.LogiLED;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
@@ -38,6 +40,11 @@ public class G710Visualizer extends Application {
         LogiLED.LogiLedInit();
         }catch(Exception e){
             e.printStackTrace();
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error!");
+            alert.setHeaderText("LogiLED Initialization Error");
+            alert.setContentText("Could not initialize LogiLED. Is your keyboard plugged in?");
+            alert.showAndWait();
             System.exit(3);
         }
         
@@ -58,6 +65,11 @@ public class G710Visualizer extends Application {
         }
         if(selectedMixer==null){
             System.out.println("No Stereo Mix mixer found.");
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error!");
+            alert.setHeaderText("Stereo Mix Error");
+            alert.setContentText("Could not find Stereo Mix. Enable Stereo Mix in your sound settings.");
+            alert.showAndWait();
             System.exit(1);
         }
         System.out.println("Selecting mixer "+selectedNumber+": "+selectedMixer.getName());
@@ -78,7 +90,11 @@ public class G710Visualizer extends Application {
         targetDataLine.open();
         bufferSize=targetDataLine.getBufferSize();
         }catch(Exception e){
-            System.out.println("Couldn't get audio device");
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error!");
+            alert.setHeaderText("Stereo Mix Error");
+            alert.setContentText("Could not open Stereo Mix.");
+            alert.showAndWait();
             System.exit(1);
         }
         targetDataLine.flush();
