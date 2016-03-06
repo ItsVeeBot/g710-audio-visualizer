@@ -13,9 +13,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javax.sound.sampled.*;
 import com.logitech.gaming.LogiLED;
+import java.util.ArrayList;
+import java.util.Optional;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
@@ -50,26 +53,48 @@ public class G710Visualizer extends Application {
         
         LogiLED.LogiLedSaveCurrentLighting();
         
-        //debug
         Mixer.Info[] info = AudioSystem.getMixerInfo();
         Mixer.Info selectedMixer = null;
         int selectedNumber=-1;
         int i=0;
+        ArrayList<String> mixerChoices = new ArrayList();
         for (Mixer.Info print : info){
-            System.out.println(i+": "+print.getName());
+            System.out.println(i+": "+print.getName()+" is a "+print.getDescription());
             i++;
-            if(print.getName().startsWith("Stereo Mix")){
-                selectedMixer = print;
-                selectedNumber = i;
+            if(print.getDescription().equals("Direct Audio Device: DirectSound Capture")){
+                mixerChoices.add(print.getName());
+            }
+            //if(print.getName().startsWith("Stereo Mix")){
+            //    selectedMixer = print;
+            //    selectedNumber = i;
+            //}
+        }
+        ChoiceDialog<String> mixerSelector = new ChoiceDialog("", mixerChoices);
+        mixerSelector.setTitle("Logitech Sound Visualizer");
+        mixerSelector.setHeaderText("Select your sound device.\n"
+                + "Ensure the selected device is a \"Line-in\".\n"
+                + "For best results, select Stereo Mix.");
+        mixerSelector.setContentText("Select device:");
+        
+        Optional<String> chosenMixer = mixerSelector.showAndWait();
+        if(chosenMixer.isPresent()){
+            i=0;
+            for(Mixer.Info choose : info){
+                if(choose.getName().equals(chosenMixer.get())){
+                    selectedMixer=choose;
+                    selectedNumber=i;
+                }
+                i++;
             }
         }
+        
         if(selectedMixer==null){
-            System.out.println("No Stereo Mix mixer found.");
+            /*System.out.println("No Stereo Mix mixer found.");
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error!");
             alert.setHeaderText("Stereo Mix Error");
             alert.setContentText("Could not find Stereo Mix. Enable Stereo Mix in your sound settings.");
-            alert.showAndWait();
+            alert.showAndWait();*/
             System.exit(1);
         }
         System.out.println("Selecting mixer "+selectedNumber+": "+selectedMixer.getName());
@@ -92,8 +117,8 @@ public class G710Visualizer extends Application {
         }catch(Exception e){
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error!");
-            alert.setHeaderText("Stereo Mix Error");
-            alert.setContentText("Could not open Stereo Mix.");
+            alert.setHeaderText("Audio Device Error");
+            alert.setContentText("Could not open selected audio device.");
             alert.showAndWait();
             System.exit(1);
         }
