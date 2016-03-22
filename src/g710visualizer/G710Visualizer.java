@@ -30,7 +30,7 @@ public class G710Visualizer extends Application {
     
     TargetDataLine targetDataLine = null;
     int bufferSize=0;
-    boolean runListener;
+    boolean runListener=false;
     boolean killSwitch=true;
     int dampener=0;
     int multiplier=1;
@@ -130,18 +130,29 @@ public class G710Visualizer extends Application {
         
         //Init the GUI
         Button startButton = new Button();
+        Button stopButton = new Button();
         startButton.setText("Start");
         startButton.setOnAction((ActionEvent event) -> {
-            System.out.println("Starting...");
-            runListener=true;
+            if(runListener==false){
+                LogiLED.LogiLedSaveCurrentLighting();
+                System.out.println("Starting...");
+                runListener=true;
+                startButton.setDisable(true);
+                stopButton.setDisable(false);
+            }
             //repeatRate.scheduleAtFixedRate(updateLights, 0, 10);
         });
-        Button stopButton = new Button();
         stopButton.setText("Stop");
         stopButton.setOnAction((ActionEvent event) -> {
-            System.out.println("Stopping...");
-            runListener=false;
+            if(runListener==true){
+                System.out.println("Stopping...");
+                runListener=false;
+                LogiLED.LogiLedRestoreLighting();
+                startButton.setDisable(false);
+                stopButton.setDisable(true);
+            }
         });
+        stopButton.setDisable(true);
         
         Slider dampSlider = new Slider();
         dampSlider.valueProperty().addListener((ObservableValue<? extends Number> ov, Number old_damp, Number new_damp) -> {
