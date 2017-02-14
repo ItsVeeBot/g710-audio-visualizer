@@ -1,3 +1,6 @@
+# g710-audio-visualizer has been deprecated
+Instead, use [Keyboard Visualizer](https://github.com/CalcProgrammer1/KeyboardVisualizer)
+
 # g710-audio-visualizer
 A music visualizer for the Logitech G710 and G710+. Will also work for other LogiLED-supported devices.
 
